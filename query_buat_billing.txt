@@ -1,0 +1,10 @@
+tutorial:
+1. https://blog.freshtracks.io/a-deep-dive-into-kubernetes-metrics-part-3-container-resource-metrics-361c5ee46e66
+2. https://medium.com/@onai.rotich/understand-container-metrics-and-why-they-matter-9e88434ca62a
+https://aws.amazon.com/fargate/pricing/
+
+
+This query calculates the per-second rate of CPU usage for each container over the last 2d minutes 
+1. buat menghitung  per-second rate of CPU usage untuk setiap container yang dimiliki user dg id="18d2e020-538d-449a-8e9c-02e4e5cf41111" 2 hari terakhir
+    sum(rate(container_network_transmit_bytes_total{container_label_user_id=~"18d2e020-538d-449a-8e9c-02e4e5cf41111"}[2d]))
+2. 

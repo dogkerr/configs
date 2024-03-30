@@ -11,16 +11,32 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
     depends_on:
       - cadvisor
+<<<<<<< HEAD
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
+=======
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+>>>>>>> 3573f969c2acb5b0629179daceefb4b1f22f64bc
     container_name: cadvisor
     ports:
       - 8080:8080
     volumes:
       - /:/rootfs:ro
+<<<<<<< HEAD
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
+=======
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+    privileged: true
+>>>>>>> 3573f969c2acb5b0629179daceefb4b1f22f64bc
   pushgateway:
     image: prom/pushgateway
     container_name: pushgateway
@@ -46,6 +62,7 @@ services:
     depends_on:
       - prometheus
       - cadvisor
+<<<<<<< HEAD
     networks:
       - monitoring
   nginx:
@@ -63,3 +80,5 @@ services:
 
 networks:
   monitoring:
+=======
+>>>>>>> 3573f969c2acb5b0629179daceefb4b1f22f64bc

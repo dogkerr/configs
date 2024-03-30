@@ -1,0 +1,14 @@
+{
+  "name": "cobagrfana",
+  "version": "1.0.0",
+  "description": "API KEY grafana= glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7",
+  "main": "k6.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "k6": "^0.0.0"
+  }
+}

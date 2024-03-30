@@ -1,0 +1,54 @@
+tutorial buat jalanin grafana dashboard buat metrics docker container: https://www.youtube.com/watch?v=wFMEoWpVOYw&t=507s
+buat embed grafana ke html: https://www.youtube.com/watch?v=Ct9PjmrExzo&t=322s
+https://www.youtube.com/watch?v=Q_tmu5Wte9E
+
+https://megamorf.gitlab.io/cheat-sheets/prometheus/
+
+
+1. ngelablelin container,
+2. nama grafana dashboard harus unik
+3. CPU Usage per Container: sum(rate(container_cpu_usage_seconds_total{container_label_user_id=~\"18d2e020-538d-449a-8e9c-02e4e5cf4e99\"}[$interval])) by (name) * 100
+4. Sent Network Traffic per Container:   sum(rate(container_network_transmit_bytes_total{container_label_user_id=~\"18d2e020-538d-449a-8e9c-02e4e5cf41111\"}[$interval])) by (name)
+5. Received Network Traffic per Container: sum(rate(container_network_receive_bytes_total{container_label_user_id=~\"18d2e020-538d-449a-8e9c-02e4e5cf41111\"}[$interval])) by (name)
+6. bikin file config json buat bikin dashboard grafana, masukin label user_id nya ke 3 bagian diatas
+
+
+sum(rate(container_cpu_usage_seconds_total))
+
+
+buat tabel baru 
+user_dasboard
+(
+    contianer_name, user_id
+
+)
+
+
+
+step by step tadi nyoba bisa nampilin dashboard container milik user:
+1. docker run --name cobauseridbeda  --label user_id=18d2e020-538d-449a-8e9c-02e4e5cf41111   -p 6371:6379 redis
+2. ubah config file nya degnan format kaya gini: 
+    a. CPU Usage per Container: sum(rate(container_cpu_usage_seconds_total{container_label_user_id=~\"18d2e020-538d-449a-8e9c-02e4e5cf4e99\"}[$interval])) by (name) * 100
+    b. Sent Network Traffic per Container:   sum(rate(container_network_transmit_bytes_total{container_label_user_id=~\"18d2e020-538d-449a-8e9c-02e4e5cf41111\"}[$interval])) by (name)
+    c. Received Network Traffic per Container: sum(rate(container_network_receive_bytes_total{container_label_user_id=~\"18d2e020-538d-449a-8e9c-02e4e5cf41111\"}[$interval])) by (name)
+3. dapetin datasource uid lewat: 
+    curl --insecure  -H "Authorization: Bearer glsa_N9zhPQlGkEkvsyatuqTyeFxNdGvQEM4V_f6a5c8e7"  http://localhost:3000/api/datasources 
+4. ubah value datasource di file config "datasource": "<uid_datasource_prometheus>",
+5. execute command dibawah., pastiing title dashboard dan uid dashboardnya random.
+    curl -X POST --insecure -H "Authorization: Bearer glsa_N9zhPQlGkEkvsyatuqTyeFxNdGvQEM4V_f6a5c8e7" -H "Content-Type: application/json" -d "{\"dashboard\":$(cat docker-quest-prometheus.json)}" http://localhost:3000/api/dashboards/db
+
+
+
+
+
+
+
+
+----
+"title": "Docker coba 33",
+"uid": "fTo9rH2ik123",
+----
+
+
+
+

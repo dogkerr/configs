@@ -77,7 +77,7 @@ func main() {
 	r.GET("/forbidden", cok.ForbiddenHandler)
 	r.GET("/serverError", cok.ServerErrorHandler)
 
-	httpServer := httpserver.New(r, httpserver.Port("8080"))
+	httpServer := httpserver.New(r, httpserver.Port("8231"))
 
 	// Waiting signal
 	interrupt := make(chan os.Signal, 1)

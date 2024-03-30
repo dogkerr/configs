@@ -2,14 +2,19 @@
 
 how to run monitoring:
 
-1. nano /etc/docker/daemon.json
+1. nano /etc/docker/daemon.json, ini bikin docker metrics bisa di scrape sama prometheus
 
 ```
-   isi daemon.json:
+1.   isi daemon.json:
    {
    "metrics-addr": "0.0.0.0:9323",
    "experimental": true
    }
+
+
+
+2.  sudo systemctl restart docker
+
 ```
 
 2. allow dessire port fierewall:
@@ -135,5 +140,71 @@ format: &refresh=5s
 - 1d
 
 ```
+
 - tombol refresh kayaknya tinggal refresh iframenya deh ?
 
+## Configuring Loki
+
+1. ubah daemon.json nya docker biar log semua docker container dikirim ke loki
+
+```
+1. sudo nano /etc/docker/daemon.json
+
+isi file:
+
+{
+   "metrics-addr": "0.0.0.0:9323",
+   "experimental": true,
+   "log-driver": "loki",
+    "log-opts": {
+        "loki-url": "http://localhost:3100/loki/api/v1/push",
+        "loki-batch-size": "400"
+    }
+
+}
+
+```
+
+2. restart docker
+
+```
+ sudo systemctl restart docker
+
+```
+
+3. docker compose up -d
+
+4. jalanin banyak request ke go_container_user1 dan go_container_user2 dengan k6
+
+```
+k6 run generate_log_golang.js
+
+```
+
+5. buka grafana (localhost:3000) & add datasource loki
+
+```
+1. buka sidebar
+2. klik datasource >  add datasource
+3. klik loki
+4. masukin url: <your_ip_address>:3100
+
+```
+
+6. buka tab explore di grafana
+
+```
+1. buka sidebar > klik explore
+2. pilih source nya loki
+3. pilih label filer  "container_name"
+4. pilih tanda "=~"
+5. pilih go_container_api_user2, go_container_api_user1
+
+6. coba juga query code: 
+- {container_name=~"go_container_api_user2|go_container_api_user1"} |= `401`
+
+- {container_name=~"go_container_api_user2|go_container_api_user1"} |= `200`
+
+- {container_name=~"go_container_api_user2|go_container_api_user1"} |= `500`
+```
+lanjutinn pas sahur 

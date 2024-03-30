@@ -11,10 +11,10 @@ export let options =  {
     insecureSkipTlsVerify: true,
     noConnectionReuse: false,
     stages: [
-        { duration: '1m', target: 3000},
-        { duration: '2m', target: 3000},
-        { duration: '1m', target: 5000},
-        { duration: '2m', target: 5000},
+        { duration: '1m', target: 500},
+        { duration: '2m', target: 600},
+        { duration: '1m', target: 700},
+        { duration: '2m', target: 700},
 
     ]
 }

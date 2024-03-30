@@ -395,7 +395,7 @@ func createNewDashboardPerUser(userId string) string {
 	}
 
 	r.Header.Add("Content-Type", "application/json")
-	r.Header.Add("Authorization", "Bearer glsa_ZbVPENfFDqP6F2yXJPxI6FCDuSWTi060_9ca1bf77")
+	r.Header.Add("Authorization", "Bearer glsa_cpTR6mbjIArqBBPHAyeLvpyDAtJGrh1B_41bb9ce9")
 	client = &http.Client{}
 	res, err := client.Do(r)
 	if err != nil {
@@ -410,5 +410,20 @@ func main() {
 	uidDashboard := createNewDashboardPerUser("18d2e020-538d-449a-8e9c-02e4e5cf41111")
 
 	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=8")
+	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=9")
+	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=1")
+	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=34")
+	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=10")
+
+	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=37")
+
+	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=5")
+
+	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=31")
+
+
+
+
+
 	// sentNetworkTraffByUser =
 }

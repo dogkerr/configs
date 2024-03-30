@@ -1,27 +1,26 @@
 
 
 1. Received Network Traffic Per Container
-<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&from=1711775161974&to=1711775461974&refresh=5s&panelId=8" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=8" width="450" height="200" frameborder="0"></iframe>
 
-harus 
 
 2. Sent Netowrk Traffic Per Container
-<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&from=1711775183485&to=1711775483485&refresh=5s&panelId=9" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=9" width="450" height="200" frameborder="0"></iframe>
 
 3. Cpu usage Per Container
-<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&from=1711775202454&to=1711775502454&refresh=5s&panelId=1" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=1" width="450" height="200" frameborder="0"></iframe>
 
 4. Memory Swap Percontainer 
-<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&from=1711775210965&to=1711775510965&refresh=5s&panelId=34" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=34" width="450" height="200" frameborder="0"></iframe>
 
 5. Memory Usage Per Container
-<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&from=1711775226878&to=1711775526878&refresh=5s&panelId=10" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=10" width="450" height="200" frameborder="0"></iframe>
 
 6. usage Memory
-<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&from=1711775248450&to=1711775548450&refresh=5s&panelId=37" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=37" width="450" height="200" frameborder="0"></iframe>
 
 7. overall cpu usage di laptop?
-<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&from=1711775266382&to=1711775566382&refresh=5s&panelId=5" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/DCHl1Vkn/dchl1vkn?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=5" width="450" height="200" frameborder="0"></iframe>
 
 8. Jumlah kontainer mili user
-<iframe src="http://localhost:3000/d-solo/Fimp0I6g/fimp0i6g?orgId=1&refresh=5m&from=1711689444491&to=1711775844491&panelId=31" width="450" height="200" frameborder="0"></iframe>
+<iframe src="http://localhost:3000/d-solo/Fimp0I6g/fimp0i6g?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=31" width="450" height="200" frameborder="0"></iframe>

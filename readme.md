@@ -1,14 +1,139 @@
-API KEY grafana= glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7
+# Dogkur config monitoring Prometheus, Grafana & config logging ELK stack
 
-curl -X POST --insecure -H "Authorization: Bearer glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7" -H "Content-Type: application/json" -d "{\"dashboard\":$(cat docker-quest-prometheus.json)}" http://localhost:3000/api/dashboards/db
+how to run monitoring:
+
+1. nano /etc/docker/daemon.json
+
+```
+   isi daemon.json:
+   {
+   "metrics-addr": "0.0.0.0:9323",
+   "experimental": true
+   }
+```
+
+2. allow dessire port fierewall:
+
+```
+1. https://www.inmotionhosting.com/support/security/how-to-install-firewalld-on-linux/
+2. firewall-cmd --zone=public --add-port=9323/tcp
+3. systemctl restart docker
+```
+
+3. docker compose up -d
+
+4.buka dashboard grafana (localhost:3000) 5. buat service account + buat api key buat service acc tersebut 6. copy api key di grafana_config_writer.go
+
+```
+(398) r.Header.Add("Authorization", "Bearer <api_key>")
+
+```
+
+7. buat datasource prometheus di grafana dashboard
+
+```
+1. buka sidebar
+2. klik datasource > add prometheus
+3. server url : http://<your_ip_address>:9090
+4. save & test
+```
+
+8. jalanin beberapa container dg label user_id yang samaa/beda
+
+```
+docker run -d --name nginxx-1  --label user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"      -p 82:80 nginx && \
+
+docker run -d --name nginxx-2 --label user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"      -p 81:80 nginx  && \
+docker run -d --name nginxx-3 --label user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"      -p 84:80 nginx
+
+```
+
+9. masukin user_id ke grafana_config_writer
+
+```
+(410) 	uidDashboard := createNewDashboardPerUser("<user_id>")
 
 
-curl -X POST --insecure -H "Authorization: Bearer glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7" -H "Content-Type: application/json" -d @docker-quest-prometheus.json http://localhost:3000/api/dashboards/db
+```
+
+10. jalanin golang config writer
+
+```
+go run grafana_config_writer.go
+```
+
+11. yang munculdi log golang itu link iframenya
+
+```
+http://127.0.0.1/d-solo/zrEtsX3d/zretsx3d?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=8
+http://127.0.0.1/d-solo/zrEtsX3d/zretsx3d?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=9
+http://127.0.0.1/d-solo/zrEtsX3d/zretsx3d?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=1
+http://127.0.0.1/d-solo/zrEtsX3d/zretsx3d?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=34
+http://127.0.0.1/d-solo/zrEtsX3d/zretsx3d?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=10
+http://127.0.0.1/d-solo/zrEtsX3d/zretsx3d?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=37
+http://127.0.0.1/d-solo/zrEtsX3d/zretsx3d?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=5
+http://127.0.0.1/d-solo/zrEtsX3d/zretsx3d?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=31
+
+```
+
+12. jalanin load testing ke nginx pake k6 biar grafik grafananya naik
+
+```
+k6 run load_testing.js
+```
+
+## link iframe format (buat embed ke html)
+
+- format:
+
+```
+http://127.0.0.1/d-solo/zrEtsX3d/zretsx3d?orgId=1&refresh=5s&from=now-5m&theme=light&to=now&panelId=1
+```
+
+- list from buat time rangenya (real time):
+
+```
+1. now-5m
+2. now-15m
+3. now-30m
+4. now-1h
+5. now-3h
+6. now-6h
+7. now-12h
+8. now-24h
+9. now-2d
 
 
-curl --insecure  -H "Authorization: Bearer glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7"  http://localhost:3000/api/datasources 
+```
 
+- buat query param "to" nilainya "now" biar realtime
 
-curl -X POST --insecure -H"Authorization: Bearer glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7" -d "{\"datasource\":$(cat data_source.json)}"  http://localhost:3000/api/datasources
+- list from buat time range (tapi pake dayFrom - dayTo) tidak real time:
 
+```
+format: &from=1709226000000&to=1709312399000
+pake unix epoch (tapi kayake gak realtime kalo gini)
+1709226000000:  Fri Mar 01 2024 00:00:00
+1709312399000:     Friday, March 1, 2024 11:59:59
+```
+
+- list refresh dashboard period:
+
+```
+format: &refresh=5s
+- 5s
+- auto
+- gak ngasih query param refresh (gak pernah direfresh )
+- 10s
+- 30s
+- 1m
+- 5m
+- 15m
+- 30m
+- 1h
+- 2h
+- 1d
+
+```
+- tombol refresh kayaknya tinggal refresh iframenya deh ?
 

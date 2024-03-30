@@ -34,35 +34,36 @@ func newCok(l logger.Interface) *cok {
 	return &cok{l}
 }
 
-func (su *cok) AuthHandler(c *gin.Context) {
+func (su *cok) InfoHandler(c *gin.Context) {
+	su.l.Info("API request to /api/v1/auth completed successfully- 18d2e020-538d-449a-8e9c-02e4e5cf41111", "http - v1 - ErrorHandler")
 
-	c.JSON(http.StatusOK, "login bang")
+	c.JSON(http.StatusOK, "API request to /api/v1/auth completed successfully")
 }
 
-func (su *cok) BadRequestHandler(c *gin.Context) {
-	su.l.Error(errors.New("gagal validasi bang - 18d2e020-538d-449a-8e9c-02e4e5cf41111"), "http - v1 - BadRequestHandler")
-	ErrorResponse(c, http.StatusBadRequest, "Gagal validasi bang", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
+func (su *cok) ErrorHandler(c *gin.Context) {
+	su.l.Error(errors.New("connection timeout- 18d2e020-538d-449a-8e9c-02e4e5cf41111"), "http - v1 - ErrorHandler")
+	ErrorResponse(c, http.StatusBadRequest, "connection timeout", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
 }
 
-func (su *cok) UnauthorizedHandler(c *gin.Context) {
-	su.l.Error(errors.New("lu belum login bang - 18d2e020-538d-449a-8e9c-02e4e5cf41111"), "http - v1 - UnauthorizedHandler")
+func (su *cok) WarnHandler(c *gin.Context) {
+	su.l.Warn("CPU usage warning - 18d2e020-538d-449a-8e9c-02e4e5cf41111", "http - v1 - WarnHandler")
 
-	ErrorResponse(c, http.StatusUnauthorized, "Lu belum login bang", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
+	ErrorResponse(c, http.StatusUnauthorized, "CPU usage warning", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
 }
 
-func (su *cok) ForbiddenHandler(c *gin.Context) {
-	su.l.Error(errors.New("lu gak boleh ke sini bang - 18d2e020-538d-449a-8e9c-02e4e5cf41111"), "http - v1 - ForbiddenHandler")
-	ErrorResponse(c, http.StatusForbidden, "Lu gak boleh ke sini bang", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
+func (su *cok) FatalHandler(c *gin.Context) {
+	// su.l.Fatal(errors.New("no space available for write operations - 18d2e020-538d-449a-8e9c-02e4e5cf41111"), "http - v1 - FatalHandler")
+	ErrorResponse(c, http.StatusForbidden, "no space available for write operations", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
 
 }
 
-func (su *cok) ServerErrorHandler(c *gin.Context) {
-	su.l.Error(errors.New("maaf bang developer kita gblg, kode buatannya error semua - 18d2e020-538d-449a-8e9c-02e4e5cf41111"), "http - v1 - ServerErrorHandler")
-	ErrorResponse(c, http.StatusInternalServerError, "Maaf bang developer kita gblg, kode buatannya error semua", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
+func (su *cok) DebugHandler(c *gin.Context) {
+	su.l.Debug("select user1 from the database - 18d2e020-538d-449a-8e9c-02e4e5cf41111", "http - v1 - DebugHandler")
+	ErrorResponse(c, http.StatusInternalServerError, "select user1 from the database", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
 }
 
 func main() {
-	l := logger.New("debug")
+	l := logger.New()
 	r := gin.Default()
 
 	r.Use(gin.Logger())
@@ -71,11 +72,11 @@ func main() {
 	cok := newCok(l)
 
 	// define the routes
-	r.GET("/auth", cok.AuthHandler)
-	r.POST("/bad", cok.BadRequestHandler)
-	r.GET("/unauthorized", cok.UnauthorizedHandler)
-	r.GET("/forbidden", cok.ForbiddenHandler)
-	r.GET("/serverError", cok.ServerErrorHandler)
+	r.GET("/info", cok.InfoHandler)
+	r.POST("/error", cok.ErrorHandler)
+	r.GET("/warn", cok.WarnHandler)
+	r.GET("/fatal", cok.FatalHandler)
+	r.GET("/debug", cok.DebugHandler)
 
 	httpServer := httpserver.New(r, httpserver.Port("8231"))
 

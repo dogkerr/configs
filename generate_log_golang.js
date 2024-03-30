@@ -18,91 +18,91 @@ export let options = {
 }
 
 // trend
-const user1AuthTrend = new Trend('List_user1Auth');
-const user1BadTrend = new Trend('List_user1Bad');
-const user1UnauthorizedTrend = new Trend('List_user1Unauthorized');
-const user1ForbiddenTrend = new Trend('List_user1Forbidden');
-const user1ServerErrorTrend = new Trend('List_user1ServerError');
+const user1infoTrend = new Trend('List_user1info');
+const user1errorTrend = new Trend('List_user1error');
+const user1warnTrend = new Trend('List_user1warn');
+const user1fatalTrend = new Trend('List_user1fatal');
+const user1debugTrend = new Trend('List_user1debug');
 
-const user2AuthTrend = new Trend('List_user2Auth');
-const user2BadTrend = new Trend('List_user2Bad');
-const user2UnauthorizedTrend = new Trend('List_user2Unauthorized');
-const user2ForbiddenTrend = new Trend('List_user2Forbidden');
-const user2ServerErrorTrend = new Trend('List_user2ServerError');
+const user2infoTrend = new Trend('List_user2info');
+const user2errorTrend = new Trend('List_user2error');
+const user2warnTrend = new Trend('List_user2warn');
+const user2fatalTrend = new Trend('List_user2fatal');
+const user2debugTrend = new Trend('List_user2debug');
 
 
 // Error rate
-const user1AuthErrorRate = new Rate('List_user1Auth_Error_Rate');
-const user1BadErrorRate = new Rate('List_user1Bad_Error_Rate');
-const user1UnauthorizedErrorRate = new Rate('List_user1Unauthorized_Error_Rate');
-const user1ForbiddenErrorRate = new Rate('List_user1Forbidden_Error_Rate');
-const user1ServerErrorErrorRate = new Rate('List_user1ServerError_Error_Rate');
+const user1infoErrorRate = new Rate('List_user1info_Error_Rate');
+const user1errorErrorRate = new Rate('List_user1error_Error_Rate');
+const user1warnErrorRate = new Rate('List_user1warn_Error_Rate');
+const user1fatalErrorRate = new Rate('List_user1fatal_Error_Rate');
+const user1debugErrorRate = new Rate('List_user1debug_Error_Rate');
 
-const user2AuthErrorRate = new Rate('List_user2Auth_Error_Rate');
-const user2BadErrorRate = new Rate('List_user2Bad_Error_Rate');
-const user2UnauthorizedErrorRate = new Rate('List_user2Unauthorized_Error_Rate');
-const user2ForbiddenErrorRate = new Rate('List_user2Forbidden_Error_Rate');
-const user2ServerErrorErrorRate = new Rate('List_user2ServerError_Error_Rate');
+const user2infoErrorRate = new Rate('List_user2info_Error_Rate');
+const user2errorErrorRate = new Rate('List_user2error_Error_Rate');
+const user2warnErrorRate = new Rate('List_user2warn_Error_Rate');
+const user2fatalErrorRate = new Rate('List_user2fatal_Error_Rate');
+const user2debugErrorRate = new Rate('List_user2debug_Error_Rate');
 
 
 function getUrl(user_no) {
     let urls  = {
-        auth: "http://localhost:823"+ user_no + "/auth",
-        bad:  "http://localhost:823"+ user_no + "/bad",
-        unauthorized:  "http://localhost:823"+ user_no + "/unauthorized",
-        forbidden:  "http://localhost:823"+ user_no + "/forbidden",
-        serverError:  "http://localhost:823"+ user_no + "/serverError",
+        info: "http://localhost:823"+ user_no + "/info",
+        error:  "http://localhost:823"+ user_no + "/error",
+        warn:  "http://localhost:823"+ user_no + "/warn",
+        fatal:  "http://localhost:823"+ user_no + "/fatal",
+        debug:  "http://localhost:823"+ user_no + "/debug",
     }
     return urls
 }
-const auth = "http://localhost:8231/auth"
+const info = "http://localhost:8231/info"
 
 export default () => {
     const userOneUrls = getUrl("1");
     const userTwoUrls = getUrl("2");
 
     const requests = {
-        'user1_auth': {
+        'user1_info': {
           method: 'GET',
-          url: userOneUrls.auth,
+          url: userOneUrls.info,
         },
-        'user1_bad': {
+        'user1_error': {
           method: 'POST',
-          url: userOneUrls.bad,
+          url: userOneUrls.error,
           body: {},
         },
-        'user1_unauthorized': {
+        'user1_warn': {
             method: 'GET',
-            url: userOneUrls.unauthorized,
+            url: userOneUrls.warn,
         },
-        'user1_forbidden': {
+        'user1_fatal': {
             method: 'GET',
-            url: userOneUrls.forbidden,
+            url: userOneUrls.fatal,
         },
-        'user1_serverError': {
+        'user1_debug': {
             method: 'GET',
-            url: userOneUrls.serverError,
+            url: userOneUrls.debug,
         },
-        'user2_auth': {
+        'user2_info': {
             method: 'GET',
-            url: userTwoUrls.auth,
+            url: userTwoUrls.info,
         },
-        'user2_bad': {
+        'user2_error': {
             method: 'POST',
-            url: userTwoUrls.bad,
+            url: userTwoUrls.error,
             body: {},
         },
-        'user2_unauthorized': {
+        'user2_warn': {
             method: 'GET',
-            url: userTwoUrls.unauthorized,
+            url: userTwoUrls.warn,
         },
-        'user2_forbidden': {
+        'user2_fatal': {
             method: 'GET',
-            url: userTwoUrls.forbidden,
+            url: userTwoUrls.fatal,
         },
-        'user2_serverError': {
+        'user2_debug': {
             method: 'GET',
-            url: userTwoUrls.serverError,
+            url: userTwoUrls.debug,
         }  
       };
 
@@ -110,45 +110,45 @@ export default () => {
       const responses = http.batch(requests);
 
       // user 1 request all endpoints
-      const user1AuthResp = responses['user1_auth'];
-      check(user1AuthResp, {
+      const user1infoResp = responses['user1_info'];
+      check(user1infoResp, {
         'status is 200': (r) => r.status === 200,
-      }) || user1AuthErrorRate.add(1);
+      }) || user1infoErrorRate.add(1);
 
-      user1AuthTrend.add(user1AuthResp.timings.duration)
+      user1infoTrend.add(user1infoResp.timings.duration)
 
-      // bad request 
-      const user1BadResp = responses['user1_bad'];
-      check(user1BadResp, {
+      // error request 
+      const user1errorResp = responses['user1_error'];
+      check(user1errorResp, {
         'status is 200': (r) => r.status === 200,
-      }) || user1BadErrorRate.add(1);
+      }) || user1errorErrorRate.add(1);
 
-      user1BadTrend.add(user1BadResp.timings.duration)
+      user1errorTrend.add(user1errorResp.timings.duration)
 
-      // unauthorized
-      const user1UnauthorizedResp = responses['user1_unauthorized'];
-      check(user1UnauthorizedResp, {
+      // warn
+      const user1warnResp = responses['user1_warn'];
+      check(user1warnResp, {
         'status is 200': (r) => r.status === 200,
-      }) || user1UnauthorizedErrorRate.add(1);
+      }) || user1warnErrorRate.add(1);
 
-      user1UnauthorizedTrend.add(user1UnauthorizedResp.timings.duration)
+      user1warnTrend.add(user1warnResp.timings.duration)
 
 
-      // forbidden
-      const user1ForbiddenResp = responses['user1_forbidden'];
-      check(user1ForbiddenResp, {
+      // fatal
+      const user1fatalResp = responses['user1_fatal'];
+      check(user1fatalResp, {
         'status is 200': (r) => r.status === 200,
-      }) || user1ForbiddenErrorRate.add(1);
+      }) || user1fatalErrorRate.add(1);
 
-      user1ForbiddenTrend.add(user1ForbiddenResp.timings.duration)
+      user1fatalTrend.add(user1fatalResp.timings.duration)
 
-      // serverError
-      const user1ServerErrorResp = responses['user1_serverError'];
-      check(user1ServerErrorResp, {
+      // debug
+      const user1debugResp = responses['user1_debug'];
+      check(user1debugResp, {
         'status is 200': (r) => r.status === 200,
-      }) || user1ServerErrorErrorRate.add(1);
+      }) || user1debugErrorRate.add(1);
 
-      user1ServerErrorTrend.add(user1ServerErrorResp.timings.duration)
+      user1debugTrend.add(user1debugResp.timings.duration)
 
 
 
@@ -156,45 +156,45 @@ export default () => {
 
 
        // user 2 request all endpoints
-       const user2AuthResp = responses['user2_auth'];
-       check(user2AuthResp, {
+       const user2infoResp = responses['user2_info'];
+       check(user2infoResp, {
          'status is 200': (r) => r.status === 200,
-       }) || user2AuthErrorRate.add(1);
+       }) || user2infoErrorRate.add(1);
  
-       user2AuthTrend.add(user2AuthResp.timings.duration)
+       user2infoTrend.add(user2infoResp.timings.duration)
  
-       // bad request 
-       const user2BadResp = responses['user2_bad'];
-       check(user2BadResp, {
+       // error request 
+       const user2errorResp = responses['user2_error'];
+       check(user2errorResp, {
          'status is 200': (r) => r.status === 200,
-       }) || user2BadErrorRate.add(1);
+       }) || user2errorErrorRate.add(1);
  
-       user2BadTrend.add(user2BadResp.timings.duration)
+       user2errorTrend.add(user2errorResp.timings.duration)
  
-       // unauthorized
-       const user2UnauthorizedResp = responses['user2_unauthorized'];
-       check(user2UnauthorizedResp, {
+       // warn
+       const user2warnResp = responses['user2_warn'];
+       check(user2warnResp, {
          'status is 200': (r) => r.status === 200,
-       }) || user2UnauthorizedErrorRate.add(1);
+       }) || user2warnErrorRate.add(1);
  
-       user2UnauthorizedTrend.add(user2UnauthorizedResp.timings.duration)
+       user2warnTrend.add(user2warnResp.timings.duration)
  
  
-       // forbidden
-       const user2ForbiddenResp = responses['user2_forbidden'];
-       check(user2ForbiddenResp, {
+       // fatal
+       const user2fatalResp = responses['user2_fatal'];
+       check(user2fatalResp, {
          'status is 200': (r) => r.status === 200,
-       }) || user2ForbiddenErrorRate.add(1);
+       }) || user2fatalErrorRate.add(1);
  
-       user2ForbiddenTrend.add(user2ForbiddenResp.timings.duration)
+       user2fatalTrend.add(user2fatalResp.timings.duration)
  
-       // serverError
-       const user2ServerErrorResp = responses['user2_serverError'];
-       check(user2ServerErrorResp, {
+       // debug
+       const user2debugResp = responses['user2_debug'];
+       check(user2debugResp, {
          'status is 200': (r) => r.status === 200,
-       }) || user2ServerErrorErrorRate.add(1);
+       }) || user2debugErrorRate.add(1);
  
-       user2ServerErrorTrend.add(user2ServerErrorResp.timings.duration)
+       user2debugTrend.add(user2debugResp.timings.duration)
  
  
     sleep(1);

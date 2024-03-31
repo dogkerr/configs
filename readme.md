@@ -211,10 +211,13 @@ k6 run generate_log_golang.js
 - {userId="18d2e020-538d-449a-8e9c-011212999"} |= `` | json | status_code="400"
 - {userId="18d2e020-538d-449a-8e9c-011212999"} |= `` | json | level="error"
 ```
+6. bikins service account baru & buatin api key nya
 
 7. import dashboard 
 ```
-buka tab dashboard
-import file loki loki per user-17.....
+1. dapetin id datasource loki dg command: curl --insecure  -H "Authorization: Bearer <api_key_service_account>"  http://localhost:3000/api/datasources 
+2. ubah datasourceId di file logs loki per-user-17... , jadi id datasource yang didapet tadi
+3. buka tab dashboard
+4. import file logs loki per user-17.....
 
 ```

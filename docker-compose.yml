@@ -38,7 +38,7 @@ services:
     expose:
       - 9100
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:10.2.6-ubuntu
     container_name: grafana
     ports:
       - 3000:3000
@@ -78,7 +78,7 @@ services:
 
     # loki promtail
   loki:
-    image: grafana/loki:latest
+    image: grafana/loki:2.8.11-amd64
     container_name: loki
     volumes:
       - ./loki:/etc/loki
@@ -89,7 +89,7 @@ services:
     networks:
       - monitoring
   promtail:
-    image: grafana/promtail:latest
+    image: grafana/promtail:2.8.11-amd64
     container_name: promtail
     volumes:
       - /var/log:/var/log
@@ -116,7 +116,7 @@ services:
       options:
         loki-url: http://192.168.164.143:3100/loki/api/v1/push
         loki-external-labels: job=docker,container_name=go_container_api_user1,userId=18d2e020-538d-449a-8e9c-1111111
-   # depends_on:
+    # depends_on:
     #   - promtail
 
   go_container_log_user2:

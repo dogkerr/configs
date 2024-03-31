@@ -1,14 +1,14 @@
-API KEY grafana= glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7
+API KEY grafana= glsa_m1Im57TLBAN4Z7mVJSppnfHI6e6KOKEM_0821b5fc
 
-curl -X POST --insecure -H "Authorization: Bearer glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7" -H "Content-Type: application/json" -d "{\"dashboard\":$(cat docker-quest-prometheus.json)}" http://localhost:3000/api/dashboards/db
-
-
-curl -X POST --insecure -H "Authorization: Bearer glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7" -H "Content-Type: application/json" -d @docker-quest-prometheus.json http://localhost:3000/api/dashboards/db
+curl -X POST --insecure -H "Authorization: Bearer glsa_m1Im57TLBAN4Z7mVJSppnfHI6e6KOKEM_0821b5fc" -H "Content-Type: application/json" -d "{\"dashboard\":$(cat docker-quest-prometheus.json)}" http://localhost:3000/api/dashboards/db
 
 
-curl --insecure  -H "Authorization: Bearer glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7"  http://localhost:3000/api/datasources 
+curl -X POST --insecure -H "Authorization: Bearer glsa_m1Im57TLBAN4Z7mVJSppnfHI6e6KOKEM_0821b5fc" -H "Content-Type: application/json" -d @docker-quest-prometheus.json http://localhost:3000/api/dashboards/db
 
 
-curl -X POST --insecure -H"Authorization: Bearer glsa_2lJAFLqG9KWOwA2lfpybWL5vikEqnwnc_ece2bad7" -d "{\"datasource\":$(cat data_source.json)}"  http://localhost:3000/api/datasources
+curl --insecure  -H "Authorization: Bearer glsa_m1Im57TLBAN4Z7mVJSppnfHI6e6KOKEM_0821b5fc"  http://localhost:3000/api/datasources 
+
+
+curl -X POST --insecure -H"Authorization: Bearer glsa_m1Im57TLBAN4Z7mVJSppnfHI6e6KOKEM_0821b5fc" -d "{\"datasource\":$(cat data_source.json)}"  http://localhost:3000/api/datasources
 
 

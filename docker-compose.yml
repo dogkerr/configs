@@ -75,7 +75,7 @@ services:
       - monitoring
     depends_on:
       - nginx
-    
+
     # loki promtail
   loki:
     image: grafana/loki:latest
@@ -102,8 +102,8 @@ services:
       - monitoring
 
   go_container_log_user1:
-    build: 
-      context: ./go_container_user1 
+    build:
+      context: ./go_container_user1
       labels:
         - "user_id=18d2e020-538d-449a-8e9c-02e4e5cf41111"
     container_name: go_container_api_user1
@@ -111,11 +111,16 @@ services:
       - 8231:8231
     networks:
       - monitoring
-    depends_on:
-      - promtail
-  
+    logging:
+      driver: loki
+      options:
+        loki-url: http://192.168.164.143:3100/loki/api/v1/push
+        loki-external-labels: job=docker,container_name=go_container_api_user1,userId=18d2e020-538d-449a-8e9c-1111111
+   # depends_on:
+    #   - promtail
+
   go_container_log_user2:
-    build: 
+    build:
       context: ./go_container_user2
       labels:
         - "user_id=18d2e020-538d-449a-8e9c-011212999"
@@ -124,10 +129,15 @@ services:
       - 8232:8232
     networks:
       - monitoring
+    logging:
+      driver: loki
+      options:
+        loki-url: http://192.168.164.143:3100/loki/api/v1/push
+
+        loki-external-labels: job=docker,container_name=go_container_api_user2,userId=18d2e020-538d-449a-8e9c-011212999
+
     depends_on:
       - promtail
-  
 
 networks:
   monitoring:
-  

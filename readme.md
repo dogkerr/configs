@@ -206,5 +206,15 @@ k6 run generate_log_golang.js
 - {container_name=~"go_container_api_user2|go_container_api_user1"} |= `200`
 
 - {container_name=~"go_container_api_user2|go_container_api_user1"} |= `500`
+
+- {userId="18d2e020-538d-449a-8e9c-011212999"} |= `` | json | status_code="500"
+- {userId="18d2e020-538d-449a-8e9c-011212999"} |= `` | json | status_code="400"
+- {userId="18d2e020-538d-449a-8e9c-011212999"} |= `` | json | level="error"
 ```
-lanjutinn pas sahur 
+
+7. import dashboard 
+```
+buka tab dashboard
+import file loki loki per user-17.....
+
+```

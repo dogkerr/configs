@@ -11,6 +11,7 @@ import (
 	"os/signal"
 	"syscall"
 	"tes/logger"
+	"time"
 
 	"tes/httpserver"
 
@@ -20,6 +21,11 @@ import (
 type response struct {
 	Error  string `json:"error" example:"message"`
 	UserId string `json:"belongs_to_user_id"`
+}
+
+type succsessResponse struct {
+	Message string `json:"message"`
+	UserId  string `json:"belongs_to_user_id"`
 }
 
 func ErrorResponse(c *gin.Context, code int, msg string, userId string) {
@@ -35,31 +41,80 @@ func newCok(l logger.Interface) *cok {
 }
 
 func (su *cok) InfoHandler(c *gin.Context) {
-	su.l.Info("API request to /api/v1/auth completed successfully- 18d2e020-538d-449a-8e9c-02e4e5cf41111", "http - v1 - ErrorHandler")
-
-	c.JSON(http.StatusOK, "API request to /api/v1/auth completed successfully")
+	start := time.Now()
+	time.Sleep(time.Millisecond * 200) // simulasi operasi gajelas
+	end := time.Now()
+	latency := end.Sub(start)
+	su.l.Info("API request to /api/v1/auth completed successfully- 18d2e020-538d-449a-8e9c-02e4e5cf41111",
+		logger.LogMetadata{Clientid: c.ClientIP(),
+			Method:     c.Request.Method,
+			StatusCode: 200, BodySize: c.Writer.Size(),
+			Path:    c.Request.URL.Path,
+			Latency: latency.String()})
+	resp := succsessResponse{Message: "API request to /api/v1/auth completed successfully",
+		UserId: "18d2e020-538d-449a-8e9c-02e4e5cf41111"}
+	c.JSON(http.StatusOK, resp)
 }
 
+// c.JSON(http.StatusOK, "API request to /api/v1/auth completed successfully")
+
 func (su *cok) ErrorHandler(c *gin.Context) {
-	su.l.Error(errors.New("connection timeout- 18d2e020-538d-449a-8e9c-02e4e5cf41111"), "http - v1 - ErrorHandler")
-	ErrorResponse(c, http.StatusBadRequest, "connection timeout", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
+	start := time.Now()
+	time.Sleep(time.Millisecond * 200) // simulasi operasi gajelas
+	end := time.Now()
+	latency := end.Sub(start)
+	su.l.Warn("gagal validasi - 18d2e020-538d-449a-8e9c-02e4e5cf41111",
+		logger.LogMetadata{Clientid: c.ClientIP(),
+			Method:     c.Request.Method,
+			StatusCode: 400, BodySize: c.Writer.Size(),
+			Path:    c.Request.URL.Path,
+			Latency: latency.String()})
+	ErrorResponse(c, http.StatusBadRequest, "gagal validasi ", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
 }
 
 func (su *cok) WarnHandler(c *gin.Context) {
-	su.l.Warn("CPU usage warning - 18d2e020-538d-449a-8e9c-02e4e5cf41111", "http - v1 - WarnHandler")
+	start := time.Now()
+	time.Sleep(time.Millisecond * 200) // simulasi operasi gajelas
+	end := time.Now()
+	latency := end.Sub(start)
+	su.l.Warn("CPU usage warning - 18d2e020-538d-449a-8e9c-02e4e5cf41111",
+		logger.LogMetadata{Clientid: c.ClientIP(),
+			Method:     c.Request.Method,
+			StatusCode: 401, BodySize: c.Writer.Size(),
+			Path:    c.Request.URL.Path,
+			Latency: latency.String()})
 
 	ErrorResponse(c, http.StatusUnauthorized, "CPU usage warning", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
 }
 
 func (su *cok) FatalHandler(c *gin.Context) {
-	// su.l.Fatal(errors.New("no space available for write operations - 18d2e020-538d-449a-8e9c-02e4e5cf41111"), "http - v1 - FatalHandler")
-	ErrorResponse(c, http.StatusForbidden, "no space available for write operations", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
+	start := time.Now()
+	time.Sleep(time.Millisecond * 200) // simulasi operasi gajelas
+	end := time.Now()
+	latency := end.Sub(start)
+	su.l.Error(errors.New("no space available for write operations - 18d2e020-538d-449a-8e9c-02e4e5cf41111"),
+		logger.LogMetadata{Clientid: c.ClientIP(),
+			Method:     c.Request.Method,
+			StatusCode: 500, BodySize: c.Writer.Size(),
+			Path:    c.Request.URL.Path,
+			Latency: latency.String()})
+	ErrorResponse(c, http.StatusInternalServerError, "no space available for write operations", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
 
 }
 
 func (su *cok) DebugHandler(c *gin.Context) {
-	su.l.Debug("select user1 from the database - 18d2e020-538d-449a-8e9c-02e4e5cf41111", "http - v1 - DebugHandler")
-	ErrorResponse(c, http.StatusInternalServerError, "select user1 from the database", "18d2e020-538d-449a-8e9c-02e4e5cf41111")
+	start := time.Now()
+	time.Sleep(time.Millisecond * 200) // simulasi operasi gajelas
+	end := time.Now()
+	latency := end.Sub(start)
+	su.l.Debug("created order ps5 - 18d2e020-538d-449a-8e9c-02e4e5cf41111",
+		logger.LogMetadata{Clientid: c.ClientIP(),
+			Method:     c.Request.Method,
+			StatusCode: 201, BodySize: c.Writer.Size(),
+			Path:    c.Request.URL.Path,
+			Latency: latency.String()})
+	resp := succsessResponse{Message: "created order ps5", UserId: "18d2e020-538d-449a-8e9c-02e4e5cf41111"}
+	c.JSON(http.StatusCreated, resp)
 }
 
 func main() {

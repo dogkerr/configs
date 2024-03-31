@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 	"os"
+	"reflect"
 
 	"github.com/rs/zerolog"
 )
@@ -50,8 +51,25 @@ func New() *Logger {
 	}
 }
 
+type LogMetadata struct {
+	Clientid   string
+	Method     string
+	StatusCode int
+	BodySize   int
+	Path       string
+	Latency    string
+}
+
+func getLogMetadata(args ...interface{}) LogMetadata {
+
+	logMtd := reflect.ValueOf(args[0]).Interface().(LogMetadata)
+
+	return logMtd
+}
+
 // Debug -.
 func (l *Logger) Debug(message interface{}, args ...interface{}) {
+
 	l.msg("debug", message, args...)
 }
 
@@ -62,7 +80,7 @@ func (l *Logger) Info(message string, args ...interface{}) {
 
 // Warn -.
 func (l *Logger) Warn(message string, args ...interface{}) {
-	l.msg( "warn", message, args...)
+	l.msg("warn", message, args...)
 }
 
 // Error -.
@@ -82,26 +100,70 @@ func (l *Logger) Fatal(message interface{}, args ...interface{}) {
 }
 
 func (l *Logger) log(message string, args ...interface{}) {
+
 	if len(args) == 0 {
 		l.logger.Info().Msg(message)
 	} else {
-		l.logger.Info().Msgf(message, args...)
+		logMetadata := getLogMetadata(args...)
+
+		l.logger.Info().
+			Str("client_id", logMetadata.Clientid).
+			Str("method", logMetadata.Method).
+			Str("status_code", fmt.Sprint(logMetadata.StatusCode)).
+			Str("body_size", fmt.Sprint(logMetadata.BodySize)).
+			Str("path", logMetadata.Path).
+			Str("latency", logMetadata.Latency).
+			Msgf(message, args...)
 	}
 }
 
 func (l *Logger) msg(level string, message interface{}, args ...interface{}) {
+
 	switch msg := message.(type) {
 	case error:
 		if level == "error" {
-			l.logger.Error().Stack().Err(msg).Msg(msg.Error())
-		}else {
-			l.logger.Fatal().Stack().Err(msg).Msg(msg.Error())
-		}
+			if len(args) == 0 {
+				l.logger.Error().Stack().Err(msg).Msg(msg.Error())
+			} else {
+				logMetadata := getLogMetadata(args...)
+				l.logger.Error().Stack().Err(msg).
+					Str("client_id", logMetadata.Clientid).
+					Str("method", logMetadata.Method).
+					Str("status_code", fmt.Sprint(logMetadata.StatusCode)).
+					Str("body_size", fmt.Sprint(logMetadata.BodySize)).
+					Str("path", logMetadata.Path).
+					Str("latency", logMetadata.Latency).Msg(msg.Error())
+			}
+		} 
+		// else {
+		// 	logMetadata := getLogMetadata(args...)
+		// 	l.logger.Fatal().Stack().Err(msg).
+		// 		Str("client_id", logMetadata.Clientid).
+		// 		Str("method", logMetadata.Method).
+		// 		Str("status_code", fmt.Sprint(logMetadata.StatusCode)).
+		// 		Str("body_size", fmt.Sprint(logMetadata.BodySize)).
+		// 		Str("path", logMetadata.Path).
+		// 		Str("latency", logMetadata.Latency).Msg(msg.Error())
+		// }
 	case string:
 		if level == "debug" {
-			l.logger.Debug().Msg(msg)
-		} else if  level == "warn"{
-			l.logger.Warn().Msg(msg)
+			logMetadata := getLogMetadata(args...)
+			l.logger.Debug().
+				Str("client_id", logMetadata.Clientid).
+				Str("method", logMetadata.Method).
+				Str("status_code", fmt.Sprint(logMetadata.StatusCode)).
+				Str("body_size", fmt.Sprint(logMetadata.BodySize)).
+				Str("path", logMetadata.Path).
+				Str("latency", logMetadata.Latency).Msg(msg)
+		} else if level == "warn" {
+			logMetadata := getLogMetadata(args...)
+			l.logger.Warn().
+				Str("client_id", logMetadata.Clientid).
+				Str("method", logMetadata.Method).
+				Str("status_code", fmt.Sprint(logMetadata.StatusCode)).
+				Str("body_size", fmt.Sprint(logMetadata.BodySize)).
+				Str("path", logMetadata.Path).
+				Str("latency", logMetadata.Latency).Msg(msg)
 		}
 
 	default:

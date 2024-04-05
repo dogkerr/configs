@@ -51,8 +51,7 @@ services:
     depends_on:
       - prometheus
       - cadvisor
-    networks:
-      - monitoring
+
   nginx:
     image: nginx:latest
     container_name: reverse_proxy
@@ -61,8 +60,7 @@ services:
     ports:
       - 80:80
       - 443:443
-    networks:
-      - monitoring
+
     depends_on:
       - grafana
 
@@ -71,8 +69,7 @@ services:
     container_name: grafana_auth
     ports:
       - 8083:8083
-    networks:
-      - monitoring
+
     depends_on:
       - nginx
 
@@ -86,8 +83,7 @@ services:
       - "3100:3100"
     restart: unless-stopped
     command: -config.file=/etc/loki/loki-config.yml
-    networks:
-      - monitoring
+
   promtail:
     image: grafana/promtail:2.8.11-amd64
     container_name: promtail
@@ -98,8 +94,6 @@ services:
     #   - "1514:1514" # this is only needed if you are going to send syslogs
     restart: unless-stopped
     command: -config.file=/etc/promtail/promtail-config.yml
-    networks:
-      - monitoring
 
   go_container_log_user1:
     build:
@@ -109,8 +103,7 @@ services:
     container_name: go_container_api_user1
     ports:
       - 8231:8231
-    networks:
-      - monitoring
+
     logging:
       driver: loki
       options:
@@ -127,8 +120,7 @@ services:
     container_name: go_container_api_user2
     ports:
       - 8232:8232
-    networks:
-      - monitoring
+
     logging:
       driver: loki
       options:
@@ -138,6 +130,3 @@ services:
 
     depends_on:
       - promtail
-
-networks:
-  monitoring:

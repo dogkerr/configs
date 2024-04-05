@@ -46,10 +46,18 @@ how to run monitoring:
 8. jalanin beberapa container dg label user_id yang samaa/beda
 
 ```
-docker run -d --name nginxx-1  --label user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"      -p 82:80 nginx && \
 
-docker run -d --name nginxx-2 --label user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"      -p 81:80 nginx  && \
-docker run -d --name nginxx-3 --label user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"      -p 84:80 nginx
+
+ <!-- 
+ 
+ docker service create --name  ninggx  --publish 8080:80 --replicas 4 --container-label  user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"  nginx:latest
+ -->
+
+testing nya pake container go  aja:
+
+
+ docker service create --name  go_container  --publish 8080:80 --replicas 3 --container-label  user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"  generate_user_dashboard_dan_perfomance_testing-go_container_log_user1:latest
+
 
 ```
 
@@ -165,7 +173,9 @@ isi file:
 
 ```
 
-2. restart docker
+2. docker plugin install grafana/loki-docker-driver:2.9.4 --alias loki --grant-all-permissions
+
+3. restart docker
 
 ```
  sudo systemctl restart docker
@@ -200,7 +210,7 @@ k6 run generate_log_golang.js
 4. pilih tanda "=~"
 5. pilih go_container_api_user2, go_container_api_user1
 
-6. coba juga query code: 
+6. coba juga query code:
 - {container_name=~"go_container_api_user2|go_container_api_user1"} |= `401`
 
 - {container_name=~"go_container_api_user2|go_container_api_user1"} |= `200`
@@ -211,11 +221,13 @@ k6 run generate_log_golang.js
 - {userId="18d2e020-538d-449a-8e9c-011212999"} |= `` | json | status_code="400"
 - {userId="18d2e020-538d-449a-8e9c-011212999"} |= `` | json | level="error"
 ```
+
 6. bikins service account baru & buatin api key nya
 
-7. import dashboard 
+7. import dashboard
+
 ```
-1. dapetin id datasource loki dg command: curl --insecure  -H "Authorization: Bearer <api_key_service_account>"  http://localhost:3000/api/datasources 
+1. dapetin id datasource loki dg command: curl --insecure  -H "Authorization: Bearer <api_key_service_account>"  http://localhost:3000/api/datasources
 2. ubah datasourceId di file logs loki per-user-17... , jadi id datasource yang didapet tadi
 3. buka tab dashboard
 4. import file logs loki per user-17.....

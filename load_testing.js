@@ -7,9 +7,9 @@ import {sleep, check } from 'k6';
 
 export let options = {
     stages: [
-        { duration: '30s', target: 500}, // dari 0 virutalUser/second ke  1000 virtualUser/second selama 30 detik
-        { duration: '2m', target: 700},
-        { duration: '30s', target: 500},
+        { duration: '8s', target: 100}, // dari 0 virutalUser/second ke  1000 virtualUser/second selama 30 detik
+        { duration: '15s', target: 200},
+        { duration: '8s', target: 200},
     ],
     thresholds: {
         http_req_duration: ['p(99)<1000'], // 99% request harus kurang dari 1s

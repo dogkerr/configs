@@ -13,7 +13,6 @@ import (
 	"time"
 )
 
-
 type GrafanaConfig struct {
 	Dashboard struct {
 		Inputs []struct {
@@ -269,6 +268,7 @@ type DataSourceResponse struct {
 	ID    string `json:"id"`
 	Uid   string `json:"uid"`
 	OrgId string `json:"orgId"`
+	Type  string `json:"type"`
 }
 
 func generateRandomString(length int) string {
@@ -318,15 +318,25 @@ func createNewDashboardPerUser(userId string) string {
 	json.Unmarshal(byteValue, &grafanaConfig)
 
 	fmt.Println("hasil data source get: ")
-	fmt.Println(data[0].Uid)
+	// fmt.Println(datasourceId) // salah disini
+	datasourceId := ""
+	for _, ds := range data {
+		fmt.Println(ds)
+		fmt.Println(ds.Type)
+		if ds.Type == "prometheus" {
+			fmt.Println("prome: ", ds)
+			datasourceId = ds.Uid
+		}
+	}
+	fmt.Println(datasourceId)
 
-	grafanaConfig.Dashboard.Inputs[0].PluginID = data[0].Uid
+	grafanaConfig.Dashboard.Inputs[0].PluginID = datasourceId
 	for i, _ := range grafanaConfig.Dashboard.Panels {
-		grafanaConfig.Dashboard.Panels[i].Datasource = data[0].Uid
+		grafanaConfig.Dashboard.Panels[i].Datasource = datasourceId
 	}
 
 	for i, _ := range grafanaConfig.Dashboard.Templating.List {
-		grafanaConfig.Dashboard.Templating.List[i].Datasource = data[0].Uid
+		grafanaConfig.Dashboard.Templating.List[i].Datasource = datasourceId
 	}
 
 	// idxCpuUsage := 14
@@ -372,7 +382,7 @@ func createNewDashboardPerUser(userId string) string {
 	fmt.Println(usageMemory)
 	grafanaConfig.Dashboard.Panels[18].Targets[2].Expr = " container_memory_usage_bytes{container_label_user_id=~\"" + user + "\"} "
 
-	grafanaConfig.Dashboard.Panels[1].Targets[0].Expr = "count(rate(container_last_seen{container_label_user_id=~\"" + user +  "\"}[$interval]))"
+	grafanaConfig.Dashboard.Panels[1].Targets[0].Expr = "count(rate(container_last_seen{container_label_user_id=~\"" + user + "\"}[$interval]))"
 
 	// remainingMemory := grafanaConfig.Dashboard.Panels[19].Targets[0].Expr
 	// fmt.Println(remainingMemory)
@@ -395,7 +405,7 @@ func createNewDashboardPerUser(userId string) string {
 	}
 
 	r.Header.Add("Content-Type", "application/json")
-	r.Header.Add("Authorization", "Bearer glsa_cpTR6mbjIArqBBPHAyeLvpyDAtJGrh1B_41bb9ce9")
+	r.Header.Add("Authorization", "Bearer glsa_i11OKMoEa9AsG5mCMNBRb4PWU7dmRiX5_94402364")
 	client = &http.Client{}
 	res, err := client.Do(r)
 	if err != nil {
@@ -404,26 +414,22 @@ func createNewDashboardPerUser(userId string) string {
 	defer res.Body.Close()
 	fmt.Println("response create dashboard: " + res.Status)
 	return randomString
-}	
+}
 
 func main() {
 	uidDashboard := createNewDashboardPerUser("18d2e020-538d-449a-8e9c-02e4e5cf41111")
 
-	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=8")
-	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=9")
-	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=1")
-	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=34")
-	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=10")
+	fmt.Println("http://127.0.0.1/d-solo/" + uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from=" + "now-5m" + "&theme=light&to=" + "now" + "&panelId=8")
+	fmt.Println("http://127.0.0.1/d-solo/" + uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from=" + "now-5m" + "&theme=light&to=" + "now" + "&panelId=9")
+	fmt.Println("http://127.0.0.1/d-solo/" + uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from=" + "now-5m" + "&theme=light&to=" + "now" + "&panelId=1")
+	fmt.Println("http://127.0.0.1/d-solo/" + uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from=" + "now-5m" + "&theme=light&to=" + "now" + "&panelId=34")
+	fmt.Println("http://127.0.0.1/d-solo/" + uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from=" + "now-5m" + "&theme=light&to=" + "now" + "&panelId=10")
 
-	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=37")
+	fmt.Println("http://127.0.0.1/d-solo/" + uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from=" + "now-5m" + "&theme=light&to=" + "now" + "&panelId=37")
 
-	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=5")
+	fmt.Println("http://127.0.0.1/d-solo/" + uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from=" + "now-5m" + "&theme=light&to=" + "now" + "&panelId=5")
 
-	fmt.Println("http://127.0.0.1/d-solo/"+ uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from="+ "now-5m"+ "&theme=light&to="+ "now"+"&panelId=31")
-
-
-
-
+	fmt.Println("http://127.0.0.1/d-solo/" + uidDashboard + "/" + strings.ToLower(uidDashboard) + "?orgId=1&refresh=5s&from=" + "now-5m" + "&theme=light&to=" + "now" + "&panelId=31")
 
 	// sentNetworkTraffByUser =
 }

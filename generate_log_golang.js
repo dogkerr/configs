@@ -8,9 +8,9 @@ import { Trend, Rate } from 'k6/metrics';
 
 export let options = {
     stages: [
-        { duration: '10s', target: 4}, // dari 0 virutalUser/second ke  4 virtualUser/second selama 30 detik
-        { duration: '20s', target: 8},
-        { duration: '10s', target: 4},
+        { duration: '10s', target: 400}, // dari 0 virutalUser/second ke  4 virtualUser/second selama 30 detik
+        { duration: '20s', target: 600},
+        { duration: '10s', target: 600},
     ],
     thresholds: {
         http_req_duration: ['p(99)<1000'], // 99% request harus kurang dari 1s

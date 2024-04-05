@@ -8,3 +8,21 @@ This query calculates the per-second rate of CPU usage for each container over t
 1. buat menghitung  per-second rate of CPU usage untuk setiap container yang dimiliki user dg id="18d2e020-538d-449a-8e9c-02e4e5cf41111" 2 hari terakhir
     sum(rate(container_network_transmit_bytes_total{container_label_user_id=~"18d2e020-538d-449a-8e9c-02e4e5cf41111"}[2d]))
 2. 
+
+
+cpu Usage: sum(
+  rate(container_cpu_usage_seconds_total[(time() - timestamp)])
+) * 100 
+
+
+sum(
+  rate(container_cpu_usage_seconds_total[1h])
+) * 100 * (time() - timestamp) / 3600;
+(sum(increase(container_network_transmit_bytes_total[1h])) + sum(increase(container_network_receive_bytes_total[1h]))) / (1024^3);
+avg_over_time(container_memory_usage_bytes[1h]) * (time() - timestamp) / 3600 / (1024^3)
+
+
+sum(rate(container_cpu_usage_seconds_total{container_label_user_id=~"18d2e020-538d-449a-8e9c-02e4e5cf41111"}[15m])) by (name) * 100
+
+
+avg_over_time(container_memory_usage_bytes{container_label_user_id=~"18d2e020-538d-449a-8e9c-02e4e5cf41111"}[1h])/ (1024)

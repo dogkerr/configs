@@ -57,7 +57,7 @@ docker network create dogker
 testing nya pake container go  aja:
 
 
- docker service create --name  go_container  --publish 8080:80 --replicas 3 --container-label  user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"  generate_user_dashboard_dan_perfomance_testing-go_container_log_user1:latest
+ docker service create --name  go_container  --publish 8080:80 --replicas 3 --container-label  user_id="18d2e020-538d-449a-8e9c-02e4e5cf41111"  configs-go_container_log_user1:latest
 
 
 ```

@@ -1,28 +1,32 @@
 
 
-FROM golang:1.22.1
+FROM golang:1.22.1-alpine as modules 
 
 # Set destination for COPY
-WORKDIR /app
 
 # Download Go modules
-COPY go.mod . go.sum  ./
+COPY go.mod . go.sum  /modules/
+WORKDIR /modules
+
 RUN go mod download
 
-# Copy the source code. Note the slash at the end, as explained in
-# https://docs.docker.com/reference/dockerfile/#copy
-COPY  . *.go ./
 
+
+#Step 2: Builder
+FROM golang:1.22.1-alpine as builder 
+COPY --from=modules /go/pkg /go/pkg
+COPY . /app
+WORKDIR /app
+RUN mkdir tmp
 # Build
-RUN CGO_ENABLED=0 GOOS=linux go build -o .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build   -o /bin/app .
 
-# Optional:
-# Optional:
-# To bind to a TCP port, runtime parameters must be supplied to the docker command.
-# But we can document in the Dockerfile what ports
-# the application is going to listen on by default.
-# https://docs.docker.com/reference/dockerfile/#expose
+# Step 3: Final
+FROM scratch
+COPY --from=builder /bin/app /app
+COPY --from=builder /app/tmp /tmp
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
 EXPOSE 8231
-
-# Run
-CMD ["./tes"]
+CMD ["/app"]

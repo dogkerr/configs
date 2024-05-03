@@ -1,6 +1,7 @@
 # Dogkur config monitoring Prometheus, Grafana & config logging ELK stack
 
 how to run monitoring:
+docker network create dogker
 
 1. nano /etc/docker/daemon.json, ini bikin docker metrics bisa di scrape sama prometheus
 
@@ -39,7 +40,7 @@ how to run monitoring:
 ```
 1. buka sidebar
 2. klik datasource > add prometheus
-3. server url : http://<your_ip_address>:9090
+3. server url : http://prometheus:9090
 4. save & test
 ```
 

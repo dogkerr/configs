@@ -198,7 +198,7 @@ k6 run generate_log_golang.js
 1. buka sidebar
 2. klik datasource >  add datasource
 3. klik loki
-4. masukin url: <your_ip_address>:3100
+4. masukin url: http://loki:3100
 
 ```
 

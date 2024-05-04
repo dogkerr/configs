@@ -18,7 +18,7 @@ export let options = {
 
 
 export default () => {
-    const res =http.get("http://localhost:82")
+    const res =http.get("http://127.0.0.1:82")
     check(res, {'200': (r) => r.status === 200})
     sleep(1);
 }

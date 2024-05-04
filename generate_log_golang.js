@@ -47,15 +47,15 @@ const user2debugErrorRate = new Rate('List_user2debug_Error_Rate');
 
 function getUrl(user_no) {
     let urls  = {
-        info: "http://localhost:823"+ user_no + "/info",
-        error:  "http://localhost:823"+ user_no + "/error",
-        warn:  "http://localhost:823"+ user_no + "/warn",
-        fatal:  "http://localhost:823"+ user_no + "/fatal",
-        debug:  "http://localhost:823"+ user_no + "/debug",
+        info: "http://127.0.0.1:823"+ user_no + "/info",
+        error:  "http://127.0.0.1:823"+ user_no + "/error",
+        warn:  "http://127.0.0.1:823"+ user_no + "/warn",
+        fatal:  "http://127.0.0.1:823"+ user_no + "/fatal",
+        debug:  "http://127.0.0.1:823"+ user_no + "/debug",
     }
     return urls
 }
-const info = "http://localhost:8231/info"
+const info = "http://127.0.0.1:8231/info"
 
 export default () => {
     const userOneUrls = getUrl("1");

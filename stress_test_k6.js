@@ -19,7 +19,7 @@ export let options =  {
     ]
 }
 
-const nginx_url = "http://localhost:80"
+const nginx_url = "http://127.0.0.1:80"
 
 export default () => {
     http.get(nginx_url)
